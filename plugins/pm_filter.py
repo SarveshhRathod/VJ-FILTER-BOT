@@ -1350,7 +1350,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if not files_:
             return await query.answer('Nᴏ sᴜᴄʜ ғɪʟᴇ ᴇxɪsᴛ.')
         files = files_
-        title = re.sub(r'@\w+', '',files["file_name"])
+        title = re.sub(r'@\w+|www\.\S+|#\w+', '', files["file_name"]).strip()
         size = get_size(files["file_size"])
         f_caption = files["caption"]
         settings = await get_settings(query.message.chat.id)
@@ -1444,7 +1444,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if not files_:
             return await query.answer('Nᴏ sᴜᴄʜ ғɪʟᴇ ᴇxɪsᴛ.')
         files = files_
-        title = re.sub(r'@\w+', '',files["file_name"])
+        title = re.sub(r'@\w+|www\.\S+|#\w+', '', files["file_name"]).strip()
         size = get_size(files['file_size'])
         f_caption = files['caption']
         settings = await get_settings(query.message.chat.id)
@@ -3292,6 +3292,7 @@ async def global_filters(client, message, text=False):
                 break
     else:
         return False
+
 
 
 
