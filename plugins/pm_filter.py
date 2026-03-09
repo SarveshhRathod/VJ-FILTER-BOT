@@ -3,6 +3,12 @@
 # Ask Doubt on telegram @KingVJ01
 
 import os, logging, string, asyncio, time, re, ast, random, math, pytz, pyrogram
+def clean_filename(name):
+    name = re.sub(r'@\w+', '', name)
+    name = re.sub(r'www\.\S+', '', name)
+    name = re.sub(r'\[.*?\]', '', name)
+    name = re.sub(r'\s+', ' ', name).strip()
+    return name
 from datetime import datetime, timedelta, date, time
 from Script import script
 from info import *
@@ -3286,4 +3292,5 @@ async def global_filters(client, message, text=False):
                 break
     else:
         return False
+
 
