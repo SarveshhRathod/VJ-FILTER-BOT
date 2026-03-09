@@ -3295,3 +3295,4 @@ async def global_filters(client, message, text=False):
 
 
 
+
