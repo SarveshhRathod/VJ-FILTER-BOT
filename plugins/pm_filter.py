@@ -1353,6 +1353,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         title = re.sub(r'@\w+|www\.\S+|#\w+', '', files["file_name"]).strip()
         size = get_size(files["file_size"])
         f_caption = files["caption"]
+        f_caption = re.sub(r'@\w+', '', f_caption).strip()
         settings = await get_settings(query.message.chat.id)
         if CUSTOM_FILE_CAPTION:
             try:
@@ -1447,6 +1448,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         title = re.sub(r'@\w+|www\.\S+|#\w+', '', files["file_name"]).strip()
         size = get_size(files['file_size'])
         f_caption = files['caption']
+        f_caption = re.sub(r'@\w+', '', f_caption).strip()
         settings = await get_settings(query.message.chat.id)
         if CUSTOM_FILE_CAPTION:
             try:
@@ -3292,6 +3294,7 @@ async def global_filters(client, message, text=False):
                 break
     else:
         return False
+
 
 
 
