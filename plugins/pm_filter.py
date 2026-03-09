@@ -1350,7 +1350,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         if not files_:
             return await query.answer('Nᴏ sᴜᴄʜ ғɪʟᴇ ᴇxɪsᴛ.')
         files = files_
-        title = files["file_name"]
+        title = files["file_name"].replace("@VJ_Bots", "")
         size = get_size(files["file_size"])
         f_caption = files["caption"]
         settings = await get_settings(query.message.chat.id)
@@ -3292,5 +3292,6 @@ async def global_filters(client, message, text=False):
                 break
     else:
         return False
+
 
 
