@@ -248,6 +248,8 @@ Nᴀᴍᴇ - {}"""
 
 <b>⚙️ sɪᴢᴇ : {file_size}</b>""" 
 
+🔰 Powered By : @KNMoviesHub17</b>"""
+    
     IMDB_TEMPLATE_TXT = """
 <b>Query: {qurey}
 
@@ -752,4 +754,5 @@ Example:- /set_caption 📕 File Name: {filename}
 
 
     
+
 
