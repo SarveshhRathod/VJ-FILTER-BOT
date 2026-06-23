@@ -1,10 +1,9 @@
-# Don't Remove Credit @VJ_Botz
+# Don't Remove Credit @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot @Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
 from pyrogram import Client, filters
 from plugins.Extra.engine import ask_ai
-
 
 @Client.on_message(filters.command('openai'))
 async def openai_ask(client, message):

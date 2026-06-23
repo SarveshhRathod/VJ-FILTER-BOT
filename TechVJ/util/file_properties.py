@@ -1,3 +1,7 @@
+# Don't Remove Credit @VJ_Bots
+# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
+# Ask Doubt on telegram @KingVJ01
+
 from pyrogram import Client
 from typing import Any, Optional
 from pyrogram.types import Message
@@ -57,3 +61,4 @@ def get_name(media_msg: Message) -> str:
 def get_media_file_size(m):
     media = get_media_from_message(m)
     return getattr(media, "file_size", 0)
+

@@ -1,10 +1,8 @@
-# Don't Remove Credit @VJ_Botz
+# Don't Remove Credit @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot @Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
 from pyrogram import Client, filters
-
-# AESTHETIC------------ https://telegram.me/Josprojects ------------ #
 
 def aesthetify(string):
     PRINTABLE_ASCII = range(0x21, 0x7f)
@@ -17,8 +15,7 @@ def aesthetify(string):
         yield chr(c)
 
 
-@Client.on_message(
-    filters.command(["ae"]))
+@Client.on_message(filters.command(["ae"]))
 async def aesthetic(client, message):
     status_message = await message.reply_text("...")
     text = "".join(str(e) for e in message.command[1:])
@@ -30,9 +27,7 @@ DART_E_MOJI = "🎯"
 # EMOJI CONSTANTS
 
 
-@Client.on_message(
-    filters.command(["throw", "dart"])
-)
+@Client.on_message(filters.command(["throw", "dart"]))
 async def throw_dart(client, message):
     """ /throw an @AnimatedDart """
     rep_mesg_id = message.message_id
@@ -50,9 +45,7 @@ DICE_E_MOJI = "🎲"
 # EMOJI CONSTANTS
 
 
-@Client.on_message(
-    filters.command(["roll", "dice"])
-)
+@Client.on_message(filters.command(["roll", "dice"]))
 async def roll_dice(client, message):
     """ @RollADie """
     rep_mesg_id = message.message_id
@@ -69,9 +62,7 @@ async def roll_dice(client, message):
 TRY_YOUR_LUCK = "🎰"
 # EMOJI CONSTANTS
 
-@Client.on_message(
-    filters.command(["luck", "cownd"])
-)
+@Client.on_message(filters.command(["luck", "cownd"]))
 async def luck_cownd(client, message):
     """ /luck an @animatedluck """
     rep_mesg_id = message.message_id
@@ -89,9 +80,7 @@ async def luck_cownd(client, message):
 GOAL_E_MOJI = "⚽"
 # EMOJI CONSTANTS
 
-@Client.on_message(
-    filters.command(["goal", "shoot"])
-)
+@Client.on_message(filters.command(["goal", "shoot"]))
 async def roll_dice(client, message):
     """ @Goal """
     rep_mesg_id = message.message_id
@@ -143,9 +132,7 @@ RUN_STRINGS = (
 )
 
 
-@Client.on_message(
-    filters.command("runs")
-)
+@Client.on_message(filters.command("runs"))
 async def runs(_, message):
     """ /runs strings """
     effective_string = random.choice(RUN_STRINGS)

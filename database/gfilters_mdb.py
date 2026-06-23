@@ -1,7 +1,6 @@
-# Don't Remove Credit @VJ_Botz
+# Don't Remove Credit @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot @Tech_VJ
 # Ask Doubt on telegram @KingVJ01
-
 
 import pymongo
 from info import OTHER_DB_URI, DATABASE_NAME
@@ -12,8 +11,6 @@ logger.setLevel(logging.ERROR)
 
 myclient = pymongo.MongoClient(OTHER_DB_URI)
 mydb = myclient[DATABASE_NAME]
-
-
 
 async def add_gfilter(gfilters, text, reply_text, btn, file, alert):
     mycol = mydb[str(gfilters)]
@@ -116,3 +113,4 @@ async def gfilter_stats():
     totalcollections = len(collections)
 
     return totalcollections, totalcount
+
