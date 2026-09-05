@@ -2,6 +2,9 @@
 # Subscribe YouTube Channel For Amazing Bot @Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import sys, glob, importlib, logging, logging.config, pytz, asyncio
 from pathlib import Path
 from pyrogram import idle
@@ -28,6 +31,12 @@ loop = asyncio.get_event_loop()
 
 async def start():
     print("\nStarting VJ-FILTER-BOT V2 High-Performance Engine...")
+    
+    if not BOT_TOKEN or not API_ID or not API_HASH:
+        print("\n❌ CRITICAL ERROR: BOT_TOKEN, API_ID, ya API_HASH .env file me missing hai!")
+        print("Kripya .env file me valid credentials dalein aur dobara run karein.\n")
+        return
+
     await TechVJBot.start()
     await initialize_clients()
     
