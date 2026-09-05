@@ -3,15 +3,30 @@
 # Ask Doubt on telegram @KingVJ01
 
 import datetime
+import logging
 import motor.motor_asyncio
 from pymongo.errors import DuplicateKeyError
 from info import DATABASE_NAME, USER_DB_URI, OTHER_DB_URI, CUSTOM_FILE_CAPTION, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, BUTTON_MODE, SPELL_CHECK_REPLY, PROTECT_CONTENT, AUTO_DELETE, MAX_BTN, AUTO_FFILTER, SHORTLINK_API, SHORTLINK_URL, SHORTLINK_MODE, TUTORIAL, IS_TUTORIAL
 from core.cache import settings_cache, user_cache
 
-motor_other = motor.motor_asyncio.AsyncIOMotorClient(OTHER_DB_URI, maxPoolSize=50)
-other_db = motor_other["referal_user"]
+logger = logging.getLogger(__name__)
+
+# Safe client initialization for other DB
+if OTHER_DB_URI and OTHER_DB_URI.strip():
+    try:
+        motor_other = motor.motor_asyncio.AsyncIOMotorClient(OTHER_DB_URI, maxPoolSize=50)
+        other_db = motor_other["referal_user"]
+    except Exception as e:
+        logger.warning(f"Failed to connect to OTHER_DB_URI: {e}")
+        motor_other = None
+        other_db = None
+else:
+    motor_other = None
+    other_db = None
 
 async def referal_add_user(user_id, ref_user_id):
+    if other_db is None:
+        return False
     user_db = other_db[str(user_id)]
     try:
         await user_db.insert_one({'_id': ref_user_id})
@@ -20,14 +35,20 @@ async def referal_add_user(user_id, ref_user_id):
         return False
 
 async def get_referal_all_users(user_id):
+    if other_db is None:
+        return []
     user_db = other_db[str(user_id)]
     return user_db.find()
 
 async def get_referal_users_count(user_id):
+    if other_db is None:
+        return 0
     user_db = other_db[str(user_id)]
     return await user_db.count_documents({})
 
 async def delete_all_referal_users(user_id):
+    if other_db is None:
+        return
     user_db = other_db[str(user_id)]
     await user_db.delete_many({})
 
@@ -52,7 +73,8 @@ default_setgs = {
 
 class Database:
     def __init__(self, uri, database_name):
-        self._client = motor.motor_asyncio.AsyncIOMotorClient(uri, maxPoolSize=100, minPoolSize=10)
+        safe_uri = uri.strip() if (uri and uri.strip()) else "mongodb://localhost:27017"
+        self._client = motor.motor_asyncio.AsyncIOMotorClient(safe_uri, maxPoolSize=100, minPoolSize=10)
         self.db = self._client[database_name]
         self.col = self.db.users
         self.grp = self.db.groups
@@ -91,7 +113,10 @@ class Database:
         return bool(user)
 
     async def total_users_count(self):
-        return await self.col.estimated_document_count()
+        try:
+            return await self.col.estimated_document_count()
+        except Exception:
+            return 0
 
     async def add_clone_bot(self, bot_id, user_id, bot_token):
         settings = {
@@ -186,13 +211,19 @@ class Database:
         await self.grp.update_one({'id': int(chat)}, {'$set': {'chat_status.is_disabled': True, 'chat_status.reason': reason}})
 
     async def total_chat_count(self):
-        return await self.grp.estimated_document_count()
+        try:
+            return await self.grp.estimated_document_count()
+        except Exception:
+            return 0
 
     async def get_all_chats(self):
         return self.grp.find({}, projection={'id': 1, 'title': 1, 'chat_status': 1})
 
     async def get_db_size(self):
-        return (await self.db.command("dbstats"))['dataSize']
+        try:
+            return (await self.db.command("dbstats"))['dataSize']
+        except Exception:
+            return 0
 
     async def get_user(self, user_id):
         return await self.users.find_one({"id": int(user_id)})

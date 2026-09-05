@@ -14,9 +14,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Asynchronous Motor Client with Connection Pool
+safe_file_uri = FILE_DB_URI.strip() if (FILE_DB_URI and FILE_DB_URI.strip()) else "mongodb://localhost:27017"
+
 client = motor.motor_asyncio.AsyncIOMotorClient(
-    FILE_DB_URI,
+    safe_file_uri,
     maxPoolSize=100,
     minPoolSize=10,
     serverSelectionTimeoutMS=5000
@@ -24,9 +25,9 @@ client = motor.motor_asyncio.AsyncIOMotorClient(
 db = client[DATABASE_NAME]
 col = db[COLLECTION_NAME]
 
-if MULTIPLE_DATABASE and SEC_FILE_DB_URI:
+if MULTIPLE_DATABASE and SEC_FILE_DB_URI and SEC_FILE_DB_URI.strip():
     sec_client = motor.motor_asyncio.AsyncIOMotorClient(
-        SEC_FILE_DB_URI,
+        SEC_FILE_DB_URI.strip(),
         maxPoolSize=100,
         minPoolSize=10,
         serverSelectionTimeoutMS=5000
@@ -40,6 +41,9 @@ else:
 
 async def init_indexes():
     """Create indexes at startup to eliminate full collection scans."""
+    if not FILE_DB_URI or not FILE_DB_URI.strip():
+        logger.warning("DATABASE_URI is empty in .env! Skipping index creation.")
+        return
     try:
         await col.create_index([("file_name", 1), ("file_size", 1)])
         await col.create_index([("file_id", 1)], unique=True)
